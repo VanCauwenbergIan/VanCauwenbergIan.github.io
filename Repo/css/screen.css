@@ -13,7 +13,7 @@
   /* colors */
   --global-color-alpha-light: #9acb95;
   --global-color-alpha: #82c37b;
-  --global-color-dark: #62b958;
+  --global-color-alpha-dark: #62b958;
 
   --global-color-neutral-xxxx-light: #f0f0f7;
   --global-color-neutral-xxx-light: #ebebf2;
@@ -83,6 +83,7 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--global-color-background);
+  overflow-x: hidden;
 }
 
 *,
@@ -347,13 +348,23 @@ input::placeholder {
     Global app component
 */
 
-.c-app {
+body {
   min-height: 100vh;
+  display: grid;
+  place-items: center;
+}
+
+.c-app {
+  max-width: 100vw;
+  overflow-x: hidden;
+  /* 
+  heel kleine gsms (minder dan de iphone 5/se) hebben momenteel geen support */
 }
 
 .c-app__logo {
+  width: 100%;
   display: flex;
-  padding-left: 24px;
+  padding-left: 1px;
   background-color: var(--global-color-background--mobile);
 }
 
@@ -362,39 +373,42 @@ input::placeholder {
   font-weight: 500;
 }
 
-.c-app__topbar {
-}
-
 .c-app__main {
 }
 
 /*
-    Component: Dashboard
+    Component: Pokemondata
     ---
-    Dashboard component with CSS grid
+    main layout with CSS grid
 */
 
 .c-pokemondata {
   height: 100%;
   display: grid;
-  grid-template-columns: 24px 1fr 24px;
+  grid-template-columns: 1px 1fr 1px;
   grid-template-rows: auto;
 }
 
-.c-pokemondata__item {
-}
-
 /* we want a background for the entire width of the page behind our header and image on mobile */
+
+/*
+    Component: Pokemondata - header
+    ---
+    title and main info section
+*/
 .c-pokemondata__header {
   grid-column: span 3;
 
   display: grid;
+  max-width: 100%;
 
-  grid-template-columns: 24px repeat(2, 1fr) 24px;
+  grid-template-columns: 1px repeat(2, 1fr) 1px;
   grid-template-rows: auto;
 
   background-color: var(--global-color-background--mobile);
 }
+
+/* don't forget to finish the before */
 
 .c-pokemondata__header .c-pokemondata__index {
   grid-column: 3;
@@ -424,7 +438,7 @@ input::placeholder {
   grid-column: 2;
   grid-row: 3;
 
-  display: flex;
+  display: grid;
   align-items: center;
 }
 
@@ -441,11 +455,18 @@ input::placeholder {
   line-height: var(--global-whitespace-xs);
 }
 
+/*
+    Component: Pokemondata - image
+    ---
+    official artwork of pokemon
+*/
+
 .c-pokemondata__container-image {
   grid-column: span 3;
 
-  display: grid;
-  place-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   background-color: var(--global-color-background--mobile);
 }
@@ -455,6 +476,11 @@ input::placeholder {
   max-width: 176px;
 }
 
+/*
+    Component: Pokemondata - description
+    ---
+*/
+
 .c-pokemondata__description {
   grid-column: 2;
 
@@ -463,6 +489,12 @@ input::placeholder {
   padding-top: 16px;
   padding-bottom: 16px;
 }
+
+/*
+    Component: Pokemondata - effectiveness
+    ---
+    lists of all types the pokemon is strong and weak against
+*/
 
 .c-pokemondata__effectiveness {
   grid-column: 2;
@@ -477,16 +509,111 @@ input::placeholder {
 }
 
 .c-list-types__item {
-  width: 88px;
-
-  padding-left: 8px;
+  padding-left: 1px;
+  width: 96px;
+  height: 32px;
 }
 
 .c-list-types__item--header {
-  width: 64px;
-
-  padding-left: 16px;
+  padding-right: 8px;
+  padding-bottom: 8px;
 }
+
+.c-list-types__button {
+  padding-left: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 88px;
+  height: 24px;
+
+  border-radius: 2px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--global-color-neutral-xxxx-light);
+}
+
+.c-list-types__button--header {
+  padding-left: 0;
+  justify-content: space-evenly;
+  width: 64px;
+}
+
+.c-list-types__button--lg {
+  padding-left: 0;
+  width: 64px;
+  display: none;
+}
+
+.c-list-types__button--sm {
+  padding: 0;
+  display: flex;
+  justify-content: center;
+
+  height: 24px;
+  width: 21px;
+}
+
+@media screen and (min-width: 300px) {
+  .c-app__logo {
+    padding-left: 8px;
+  }
+  .c-pokemondata__header {
+    grid-template-columns: 8px repeat(2, 1fr) 8px;
+  }
+  .c-pokemondata {
+    grid-template-columns: 8px 1fr 8px;
+  }
+}
+
+@media screen and (min-width: 380px) {
+  .c-app__logo {
+    padding-left: 24px;
+  }
+  .c-list-types__button--sm {
+    display: none;
+  }
+
+  .c-list-types__button--lg {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+  .c-pokemondata__header {
+    grid-template-columns: 24px repeat(2, 1fr) 24px;
+  }
+
+  .c-pokemondata {
+    grid-template-columns: 24px 1fr 24px;
+  }
+}
+
+.c-icon__type {
+  fill: var(--global-color-neutral-xxxx-light);
+  opacity: 0.95;
+  height: 13px;
+  width: 13px;
+  /* width differs a bit from icon to icon */
+}
+
+.c-icon__expand {
+  fill: var(--global-color-neutral-xxxx-light);
+  opacity: 0.95;
+  height: 24px;
+  width: 24px;
+}
+
+.c-icon__expand--dark {
+  fill: var(--global-color-neutral-xxxx-dark);
+
+  transform: rotate(180deg);
+}
+
+/*
+    Component: Pokemondata - stats
+    ---
+    barchart with all of the pokemons stats
+*/
 
 .c-pokemondata__stats {
   grid-column: 2;
@@ -494,10 +621,10 @@ input::placeholder {
 
 .c-barchart {
   display: grid;
-
   max-width: 100%;
-
-  grid-template-columns: max-content 0.1fr 0.1fr 0.1fr 1fr;
+  grid-template-columns: max-content 0.1fr max-content 0.1fr 1fr;
+  grid-template-rows: repeat(6, 18px);
+  align-items: center;
   grid-auto-flow: row;
   row-gap: 8px;
 }
@@ -505,45 +632,254 @@ input::placeholder {
 .c-barchart--label {
   grid-column: 1;
   height: 18px;
+
+  display: flex;
+  align-items: center;
+
+  color: var(--global-color-neutral-xxx-dark);
 }
 
 .c-barchart--value {
   grid-column: 3;
   height: 18px;
+
+  font-weight: 500;
+  color: var(--global-color-neutral);
+
+  display: flex;
+  align-items: center;
 }
 
 .c-barchart--bar {
   grid-column: 5;
 
-  display: flex;
-  align-items: center;
+  height: 8px;
+  width: 100%;
 
+  border-radius: 5px;
   background-color: var(--global-color-neutral-xxx-light);
+}
+
+.c-barchart--bar__percentage {
+  height: 8px;
+
+  border-radius: 5px;
+  background-color: var(--global-color-alpha);
 }
 
 .c-barchart--label {
   font-size: 14px;
 }
 
+/*
+    Component: Pokemondata - moves & abilities
+    ---
+    small text for each ability
+    table of all moves (need to find a way to limit the height and scroll it without fucking it up)
+*/
+
 .c-pokemondata__abilities {
   grid-column: 2;
 }
 
-.c-pokemondata_movelist {
-  grid-column: 2;
+.c-ability__container {
+  display: grid;
+  grid-template-columns: max-content 24px 1fr;
+  grid-row: auto;
+
+  font-size: 14px;
 }
 
-.c-pokemondata_evolutions {
-  grid-column: 2;
+.c-ability--title {
+  grid-column: 1;
+
+  color: var(--global-color-neutral);
 }
 
-@media screen and (min-width: 56em) {
+.c-ability--description {
+  grid-column: 3;
+  padding-bottom: 8px;
+}
+
+.c-pokemondata__movelist {
+  grid-column: 2;
+
+  display: grid;
+  justify-content: center;
+}
+
+.c-scroll-table {
+  max-width: 450px;
+
+  border-radius: 0 0 10px 10px;
+  box-shadow: var(--global-box-shadow-lg);
+}
+
+.c-table__moves {
+  border-collapse: collapse;
+  width: 100%;
+
+  font-size: 14px;
+  line-height: var(--global-whitespace-xs);
+  color: var(--global-color-neutral-xxx-dark);
+  text-align: left;
+}
+
+thead {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.c-table__moves colgroup col {
+  width: calc(100% / 22);
+}
+
+.c-table__moves th,
+td {
+  font-weight: normal;
+  padding: 8px;
+}
+
+.c-table__moves--title {
+  column-span: 6;
+  background-color: var(--global-color-neutral-xxxx-light);
+}
+
+.c-table__moves tbody tr {
+  border-bottom: thin solid var(--global-color-neutral-xx-light);
+}
+
+.c-table__moves tbody tr:nth-of-type(even) {
+  background-color: var(--global-color-neutral-xxx-light);
+}
+
+.c-table__moves thead tr {
+  background-color: var(--global-color-neutral-xx-light);
+}
+
+.c-table__moves tbody tr td:nth-of-type(1),
+.c-table__moves tbody tr td:nth-of-type(5),
+.c-table__moves tbody tr td:nth-of-type(6) {
+  text-align: right;
+}
+
+.c-table__moves--topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 8px;
+  padding-right: 8px;
+  max-width: 450px;
+  height: 32px;
+  width: 100%;
+
+  border-radius: 10px 10px 0 0;
+  box-shadow: var(--global-box-shadow-lg);
+}
+
+.c-icon__category {
+  width: 24px;
+  height: 24px;
+
+  fill: var(--global-color-neutral);
+}
+
+/*
+    Component: Pokemondata - evolutions
+    ---
+    on mobile image for each of the pokemon in evolution chain with name, level, index and types
+    on desktop the current pokemon is excluded (cause it's already visible without scrolling up)
+*/
+
+.c-pokemondata__evolutions {
+  grid-column: 2;
+
+  display: grid;
+  justify-content: center;
+
+  padding-top: 16px;
+}
+
+.c-evolutionline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 450px;
+  min-height: 168px;
+}
+
+.c-evolutionline__title {
+  height: 100%;
+  width: 24px;
+
+  display: none;
+}
+
+.c-evolutionline__title h2 {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+.c-pokemon__container-image {
+  display: flex;
+  justify-content: center;
+}
+
+.c-pokemon__image {
+  max-width: 138px;
+  max-height: 138px;
+}
+
+.c-icon__next {
+  fill: var(--global-color-neutral);
+
+  height: 24px;
+  width: 24px;
+}
+
+.c-pokemon__namegroup {
+  display: flex;
+  justify-content: space-evenly;
+
+  color: var(--global-color-neutral-xxx-dark);
+  font-weight: 500;
+}
+
+.c-pokemon__namegroup--index {
+  color: var(--global-color-neutral-xxxx-dark);
+  padding-bottom: 8px;
+}
+
+.c-pokemon__level {
+  text-align: center;
+
+  color: var(--global-color-neutral);
+  font-weight: 500;
+}
+
+.c-pokemon__types {
+  display: flex;
+  justify-content: center;
+}
+
+@media screen and (min-width: 25em) {
+}
+
+/*
+    the following is mostly for portrait mode tablets
+    main change:
+    2 main columns next to eachother instead of a single one
+*/
+
+@media screen and (min-width: 47em) {
   .c-app {
     padding: 16px 32px 32px 32px;
   }
 
   .c-app__logo {
     padding: 0;
+
     background-color: var(--global-color-background);
   }
 
@@ -561,8 +897,8 @@ input::placeholder {
     grid-column: 1;
     grid-row: 1;
 
-    max-width: 312px;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: max-content 1fr;
+    grid-template-rows: auto;
 
     background-color: var(--global-color-background);
   }
@@ -593,9 +929,15 @@ input::placeholder {
     padding-bottom: 8px;
   }
 
+  .c-list-types__item--header {
+    padding-right: 8px;
+    padding-left: 8px;
+  }
+
   .c-pokemondata__header .c-pokemondata__category {
     grid-column: 1;
     grid-row: 3;
+    padding-left: 8px;
 
     display: block;
     color: var(--global-color-neutral-x-dark);
@@ -604,7 +946,6 @@ input::placeholder {
   }
 
   .c-pokemondata__container-image {
-    display: block;
     grid-column: 2;
     grid-row: span 3;
 
@@ -619,6 +960,7 @@ input::placeholder {
   .c-pokemondata__description {
     grid-column: 1;
     grid-row: 2;
+    padding-left: 8px;
 
     max-width: 300px;
     font-size: 15px;
@@ -644,18 +986,48 @@ input::placeholder {
   .c-pokemondata__abilities {
     grid-column: 1;
     grid-row: 5;
+
+    max-width: 450px;
   }
 
-  .c-pokemondata_movelist {
+  .c-pokemondata__movelist {
     grid-column: 2;
     grid-row: 5;
   }
 
-  .c-pokemondata_evolutions {
+  .c-pokemondata__evolutions {
     grid-column: 2;
     grid-row: 4;
+
+    padding: 0;
+  }
+
+  .c-card__title.u-hide {
+    display: none;
+  }
+
+  .c-evolutionline__title {
+    display: block;
+  }
+
+  /* collapsable on mobile full-height, scrollable on desktop and/or tablet */
+
+  .c-scroll-table {
+    display: block;
+    height: 424px;
+    overflow-y: auto;
+  }
+
+  .c-icon__expand--dark {
+    display: none;
   }
 }
+
+/*
+    the following is mostly for pcs and very wide tablets
+    main change:
+    3 main columns next to eachother instead of 2, preferably no scrolling if I figure out how to make that table scrollable
+*/
 
 @media screen and (min-width: 80em) {
   .c-app {
@@ -680,7 +1052,8 @@ input::placeholder {
     grid-column: 1;
     grid-row: 2;
 
-    padding: 0;
+    padding-top: 0;
+    padding-bottom: 0;
   }
 
   .c-pokemondata__effectiveness {
@@ -698,12 +1071,14 @@ input::placeholder {
     grid-row: 1 / 3;
   }
 
-  .c-pokemondata_movelist {
+  .c-pokemondata__movelist {
     grid-column: 3;
     grid-row: 3 / span 2;
+
+    display: block;
   }
 
-  .c-pokemondata_evolutions {
+  .c-pokemondata__evolutions {
     grid-column: 2;
     grid-row: 4;
   }
@@ -723,7 +1098,7 @@ input::placeholder {
   font-size: 14px;
   font-weight: 700;
 
-  color: var(--global-color-alpha);
+  color: var(--global-color-alpha-dark);
 }
 
 .c-card__body {
@@ -732,7 +1107,7 @@ input::placeholder {
 }
 
 .c-card__body--subtitle {
-  font-size: 14px;
+  font-size: 16px;
   line-height: var(--global-whitespace-xs);
   font-weight: 500;
   margin-bottom: var(--global-baseline);
@@ -795,6 +1170,10 @@ input::placeholder {
 /*------------------------------------*\
 #UTILITIES
 \*------------------------------------*/
+
+.u-display-none {
+  display: none;
+}
 
 /*
     Utilities: color
