@@ -104,14 +104,14 @@
             <div class="c-app__main">
                 <div class="c-pokemondata">
                     <div class="c-pokemondata__item c-pokemondata__header">
-                        <h3 class="c-pokemondata__header__item c-pokemondata__index u-mb-clear">
+                        <h3 class="c-pokemondata__header__item c-pokemondata__index u-mb-clear js-header-index">
                             #001
                         </h3>
-                        <h2 class="c-pokemondata__header__item c-pokemondata__name u-mb-clear">
+                        <h2 class="c-pokemondata__header__item c-pokemondata__name u-mb-clear js-header-name">
                             Bulbasaur 
                         </h2>
                         <div class="c-pokemondata__header__item c-pokemondata__types">
-                            <ul class="c-list-types o-list u-mb-clear">
+                            <ul class="c-list-types o-list u-mb-clear js-header-types">
                                 <li class="c-list-types__item--header">
                                     <!-- putting the color here, because it will be changed through JS anyway -->
                                     <button class="o-button-reset c-list-types__button c-list-types__button--header" style="background-color: #62B958">
@@ -131,14 +131,14 @@
                                 </li>
                             </ul>
                         </div>
-                        <h3 class="c-pokemondata__header__item c-pokemondata__category u-mb-clear">
+                        <h3 class="c-pokemondata__header__item c-pokemondata__category u-mb-clear js-header-category">
                             The Seed Pokémon
                         </h3>
                     </div>
-                    <div class="c-pokemondata__item c-pokemondata__container-image">
+                    <div class="c-pokemondata__item c-pokemondata__container-image js-main-image">
                         <img class="c-pokemondata__image" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png" alt="official artwork of bulbasaur"/>
                     </div>
-                    <p class="c-pokemondata__item c-pokemondata__description u-mb-clear">
+                    <p class="c-pokemondata__item c-pokemondata__description u-mb-clear js-description">
                         A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.
                     </p>
                     <div class="c-pokemondata__item c-pokemondata__effectiveness">
@@ -150,7 +150,7 @@
                                 <h3 class="c-card__body--subtitle">
                                     Strong against:
                                 </h3>
-                                <ul class="c-list-types o-list">
+                                <ul class="c-list-types o-list js-effectiveness">
                                     <li class="c-list-types__item">
                                         <button class="o-button-reset c-list-types__button" style="background-color: #62B958">
                                             <svg class="c-icon__type">
@@ -210,7 +210,7 @@
                                 <h3 class="c-card__body--subtitle">
                                     Weak against:
                                 </h3>
-                                <ul class="c-list-types o-list">
+                                <ul class="c-list-types o-list js-weakness">
                                     <li class="c-list-types__item">
                                         <button class="o-button-reset c-list-types__button" style="background-color: #7490C9">
                                             <svg class="c-icon__type">
@@ -261,7 +261,7 @@
                     </div>
                     <div class="c-pokemondata__item c-pokemondata__stats">
                         <div class="c-card">
-                            <h2 class="c-card__title">
+                            <h2 class="c-card__title js-barchart-title">
                                 Base stats (at Level 1)
                             </h2>
                             <div class="c-card__body">
@@ -269,56 +269,56 @@
                                     <div class="c-barchart--label">
                                         HP:
                                     </div>
-                                    <div class="c-barchart--value">
+                                    <div class="c-barchart--value js-barchart-value-hp">
                                         45
                                     </div>
                                     <div class="c-barchart--bar">
-                                        <div class="c-barchart--bar__percentage" style="width: 22%"></div>
+                                        <div class="c-barchart--bar__percentage js-barchart-percentage-hp" style="width: 22%"></div>
                                     </div>
                                     <div class="c-barchart--label">
                                         Attack:
                                     </div>
-                                    <div class="c-barchart--value">
+                                    <div class="c-barchart--value js-barchart-value-attack">
                                         49
                                     </div>
                                     <div class="c-barchart--bar">
-                                        <div class="c-barchart--bar__percentage" style="width: 24%"></div>
+                                        <div class="c-barchart--bar__percentage js-barchart-percentage-attack" style="width: 24%"></div>
                                     </div>
                                     <div class="c-barchart--label">
                                         Defense:
                                     </div>
-                                    <div class="c-barchart--value">
+                                    <div class="c-barchart--value js-barchart-value-defense">
                                         49
                                     </div>
                                     <div class="c-barchart--bar">
-                                        <div class="c-barchart--bar__percentage" style="width: 24%"></div>
+                                        <div class="c-barchart--bar__percentage js-barchart-percentage-defense" style="width: 24%"></div>
                                     </div>
                                     <div class="c-barchart--label">
                                         Sp. Attack:
                                     </div>
-                                    <div class="c-barchart--value">
+                                    <div class="c-barchart--value js-barchart-value-sattack">
                                         65
                                     </div>
                                     <div class="c-barchart--bar">
-                                        <div class="c-barchart--bar__percentage" style="width: 33%"></div>
+                                        <div class="c-barchart--bar__percentage js-barchart-percentage-sattack" style="width: 33%"></div>
                                     </div>
                                     <div class="c-barchart--label">
                                         Sp. Defense:
                                     </div>
-                                    <div class="c-barchart--value">
+                                    <div class="c-barchart--value js-barchart-value-sdefense">
                                         65
                                     </div>
                                     <div class="c-barchart--bar">
-                                        <div class="c-barchart--bar__percentage" style="width: 33%"></div>
+                                        <div class="c-barchart--bar__percentage js-barchart-percentage-sdefense" style="width: 33%"></div>
                                     </div>
                                     <div class="c-barchart--label">
                                         Speed:
                                     </div>
-                                    <div class="c-barchart--value">
+                                    <div class="c-barchart--value js-barchart-value-speed">
                                         45
                                     </div>
                                     <div class="c-barchart--bar">
-                                        <div class="c-barchart--bar__percentage" style="width: 22%"></div>
+                                        <div class="c-barchart--bar__percentage js-barchart-percentage-speed" style="width: 22%"></div>
                                     </div>
                                 </div>
                             </div>
@@ -333,7 +333,7 @@
                                 <h3 class="c-card__body--subtitle">
                                     Abilities
                                 </h3>
-                                <div class="c-ability__container">
+                                <div class="c-ability__container js-abilities">
                                     <h4 class="c-ability--title u-mb-clear">
                                         Overgrow
                                     </h4>
@@ -395,7 +395,7 @@
                                         <th colspan="3">Acc.</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody class="js-table-moves">
                                     <tr>
                                         <td colspan="2">1</td>
                                         <td colspan="6">Tackle</td>
@@ -743,7 +743,7 @@
                                 Evolution Line
                             </h2>
                             <div class="c-card__body">
-                                <div class="c-evolutionline">
+                                <div class="c-evolutionline js-evolutions">
                                     <div class="c-evolutionline__title">
                                         <h2 class="c-card__title">
                                             Evolution Line

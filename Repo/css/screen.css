@@ -27,7 +27,7 @@
   --global-color-neutral-xxx-dark: #2e3333;
   --global-color-neutral-xxxx-dark: #171a1a;
 
-  --global-color-background--mobile: var(--global-color-alpha-light);
+  --global-color-background--mobile: var(--global-color-alpha);
   --global-color-background: var(--global-color-neutral-xxxx-light);
 
   /* Shadows */
@@ -337,7 +337,7 @@ input::placeholder {
 */
 
 .c-logo {
-  height: 64px;
+  min-height: 64px;
   color: var(--global-color-neutral-xxxx-light);
   font-size: 14px;
 }
@@ -402,7 +402,7 @@ body {
   display: grid;
   max-width: 100%;
 
-  grid-template-columns: 1px repeat(2, 1fr) 1px;
+  grid-template-columns: 1px max-content 1fr 1px;
   grid-template-rows: auto;
 
   background-color: var(--global-color-background--mobile);
@@ -472,8 +472,8 @@ body {
 }
 
 .c-pokemondata__image {
-  max-height: 176px;
-  max-width: 176px;
+  min-height: 176px;
+  min-width: 176px;
 }
 
 /*
@@ -623,7 +623,7 @@ body {
   display: grid;
   max-width: 100%;
   grid-template-columns: max-content 0.1fr max-content 0.1fr 1fr;
-  grid-template-rows: repeat(6, 18px);
+  grid-template-rows: repeat(6, 1fr);
   align-items: center;
   grid-auto-flow: row;
   row-gap: 8px;
@@ -631,7 +631,6 @@ body {
 
 .c-barchart--label {
   grid-column: 1;
-  height: 18px;
 
   display: flex;
   align-items: center;
@@ -641,10 +640,9 @@ body {
 
 .c-barchart--value {
   grid-column: 3;
-  height: 18px;
 
   font-weight: 500;
-  color: var(--global-color-neutral);
+  color: var(--global-color-neutral-x-dark);
 
   display: flex;
   align-items: center;
@@ -653,7 +651,6 @@ body {
 .c-barchart--bar {
   grid-column: 5;
 
-  height: 8px;
   width: 100%;
 
   border-radius: 5px;
@@ -661,7 +658,7 @@ body {
 }
 
 .c-barchart--bar__percentage {
-  height: 8px;
+  min-height: 8px;
 
   border-radius: 5px;
   background-color: var(--global-color-alpha);
@@ -810,7 +807,6 @@ td {
 }
 
 .c-evolutionline__title {
-  height: 100%;
   width: 24px;
 
   display: none;
@@ -1014,7 +1010,7 @@ td {
 
   .c-scroll-table {
     display: block;
-    height: 424px;
+    max-height: 450px;
     overflow-y: auto;
   }
 
@@ -1030,10 +1026,6 @@ td {
 */
 
 @media screen and (min-width: 80em) {
-  .c-app {
-    padding: 32px 64px 64px 64px;
-  }
-
   .c-pokemondata {
     grid-template-columns: repeat(3, 1fr);
   }
@@ -1090,7 +1082,6 @@ td {
 
 .c-card {
   width: 100%;
-  height: 100%;
 }
 
 .c-card__title {
