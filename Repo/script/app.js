@@ -209,7 +209,7 @@ const showBaseStats = async (pokemon) => {
     defensePercentage.style.width = (defenseValue.innerHTML / 255)*100 + '%';
     sattackPercentage.style.width = (sattackValue.innerHTML / 255)*100 + '%';
     sdefensePercentage.style.width = (sdefenseValue.innerHTML / 255)*100 + '%';
-    speedPercentage.style.width = (speedPercentage.innerHTML / 255)*100 + '%';
+    speedPercentage.style.width = (speedValue.innerHTML / 255)*100 + '%';
 
     const json = await getEvolutionChain(pokemon);
     
@@ -270,7 +270,7 @@ const showTypes = async (pokemon) => {
         counter++;
         htmlString += `
         <li class="c-list-types__item--header">
-        <button class="o-button-reset c-list-types__button c-list-types__button--header" style="background-color: ${colorsType(t.type.name)[0]}">
+        <button class="o-button-reset c-list-types__button c-list-types__button--header u-mb-clear" style="background-color: ${colorsType(t.type.name)[0]}">
             <svg class="c-icon__type">
                 <use xlink:href="#c-${t.type.name}"/>
             </svg>
@@ -497,7 +497,7 @@ document.addEventListener("DOMContentLoaded", function(){
     sdefenseValue = document.querySelector(".js-barchart-value-sdefense");
     sdefensePercentage = document.querySelector(".js-barchart-percentage-sdefense");
     speedValue = document.querySelector(".js-barchart-value-speed");
-    speedPercentage = document.querySelector(".js-barchart-value-hp");
+    speedPercentage = document.querySelector(".js-barchart-percentage-speed");
 
     getAPI();
 })

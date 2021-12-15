@@ -11,6 +11,10 @@
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/screen.css">
     <script src="../Repo/script/app.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- most of the data here are examples and will be replaced from JS -->
@@ -96,25 +100,25 @@
         
     <div class="c-app">
         <div class="o-container">
-            <div class="c-app__logo">
-                <h1 class="c-logo u-mb-clear">
+            <div class="c-app__logo u-background-mobile">
+                <h1 class="c-logo u-mb-clear u-color-light">
                     Give me another Pokémon!
                 </h1>
             </div>
             <div class="c-app__main">
                 <div class="c-pokemondata">
-                    <div class="c-pokemondata__item c-pokemondata__header">
+                    <div class="c-pokemondata__item c-pokemondata__header u-background-mobile">
                         <h3 class="c-pokemondata__header__item c-pokemondata__index u-mb-clear js-header-index">
                             #001
                         </h3>
-                        <h2 class="c-pokemondata__header__item c-pokemondata__name u-mb-clear js-header-name">
+                        <h2 class="c-pokemondata__header__item c-pokemondata__name u-mb-clear u-color-light js-header-name">
                             Bulbasaur 
                         </h2>
                         <div class="c-pokemondata__header__item c-pokemondata__types">
                             <ul class="c-list-types o-list u-mb-clear js-header-types">
                                 <li class="c-list-types__item--header">
                                     <!-- putting the color here, because it will be changed through JS anyway -->
-                                    <button class="o-button-reset c-list-types__button c-list-types__button--header" style="background-color: #62B958">
+                                    <button class="o-button-reset c-list-types__button c-list-types__button--header u-mb-clear" style="background-color: #62B958">
                                         <svg class="c-icon__type">
                                             <use xlink:href="#c-grass"/>
                                         </svg>
@@ -122,7 +126,7 @@
                                     </button>
                                 </li>
                                 <li class="c-list-types__item--header">
-                                    <button class="o-button-reset  c-list-types__button c-list-types__button--header" style="background-color: #AA5CCF">
+                                    <button class="o-button-reset  c-list-types__button c-list-types__button--header u-mb-clear" style="background-color: #AA5CCF">
                                         <svg class="c-icon__type">
                                             <use xlink:href="#c-poison"/>
                                         </svg>
@@ -131,11 +135,11 @@
                                 </li>
                             </ul>
                         </div>
-                        <h3 class="c-pokemondata__header__item c-pokemondata__category u-mb-clear js-header-category">
+                        <h3 class="c-pokemondata__header__item c-pokemondata__category u-mb-clear u-color-light js-header-category">
                             The Seed Pokémon
                         </h3>
                     </div>
-                    <div class="c-pokemondata__item c-pokemondata__container-image js-main-image">
+                    <div class="c-pokemondata__item c-pokemondata__container-image u-background-mobile js-main-image">
                         <img class="c-pokemondata__image" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png" alt="official artwork of bulbasaur"/>
                     </div>
                     <p class="c-pokemondata__item c-pokemondata__description u-mb-clear js-description">
@@ -143,9 +147,9 @@
                     </p>
                     <div class="c-pokemondata__item c-pokemondata__effectiveness">
                         <div class="c-card">
-                            <h2 class="c-card__title">
+                            <h3 class="c-card__title">
                                 Effectiveness and Weaknesses
-                            </h2>
+                            </h3>
                             <div class="c-card__body">
                                 <h3 class="c-card__body--subtitle">
                                     Strong against:
@@ -261,9 +265,9 @@
                     </div>
                     <div class="c-pokemondata__item c-pokemondata__stats">
                         <div class="c-card">
-                            <h2 class="c-card__title js-barchart-title">
+                            <h3 class="c-card__title js-barchart-title">
                                 Base stats (at Level 1)
-                            </h2>
+                            </h3>
                             <div class="c-card__body">
                                 <div class="c-barchart o-list">
                                     <div class="c-barchart--label">
@@ -326,9 +330,9 @@
                     </div>
                     <div class="c-pokemondata__item c-pokemondata__abilities">
                         <div class="c-card">
-                            <h2 class="c-card__title">
+                            <h3 class="c-card__title">
                                 Moves and Abilities  
-                            </h2>
+                            </h3>
                             <div class="c-card__body">
                                 <h3 class="c-card__body--subtitle">
                                     Abilities
@@ -739,15 +743,15 @@
                     </div>
                     <div class="c-pokemondata__item c-pokemondata__evolutions">
                         <div class="c-card">
-                            <h2 class="c-card__title u-hide">
+                            <h3 class="c-card__title u-hide">
                                 Evolution Line
-                            </h2>
+                            </h3>
                             <div class="c-card__body">
                                 <div class="c-evolutionline js-evolutions">
                                     <div class="c-evolutionline__title">
-                                        <h2 class="c-card__title">
+                                        <h3 class="c-card__title">
                                             Evolution Line
-                                        </h2>
+                                        </h3>
                                     </div>
                                     <!-- not all pokemon have evolutions of course, some also just have 1 instead of 2-->
                                     <div class="c-evolutionline--pokemon">
