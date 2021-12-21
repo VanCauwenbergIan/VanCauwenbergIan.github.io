@@ -1,10 +1,19 @@
-let root, index, pokemonName, category, headerTypes, mainImage, description, effectiveness, weakness, abilities, moves;
+let root, index, pokemonName, category, headerTypes, mainImage, description, effectiveness, weakness, abilities, moves, typeButtons, evolutions, expand;
 let barchartTitle, HPValue, HPPercentage, attackValue, attackPercentage, defenseValue, defensePercentage, sattackValue, sattackPercentage, sdefenseValue, sdefensePercentage, speedValue, speedPercentage;
+let arrayPokemon;
 
 function randomPokemon(json){
-    var arrayPokemon = json["results"];
+    arrayPokemon = json["results"];
 
     var randomPokemon = arrayPokemon[Math.floor(Math.random()*arrayPokemon.length)];
+
+    console.log(`Chosen Pokemon: ${randomPokemon["name"]}`);
+
+    getDetails(randomPokemon["url"]);
+}
+
+function refreshPokemon(array){
+    var randomPokemon = array[Math.floor(Math.random()*arrayPokemon.length)];
 
     console.log(`Chosen Pokemon: ${randomPokemon["name"]}`);
 
@@ -123,6 +132,119 @@ function showDetails(pokemon) {
     showBaseStats(pokemon);
     showAbilities(pokemon);
     showMoves(pokemon);
+    showEvolutions(pokemon);
+}
+
+const showEvolutions = async (pokemon) => {
+    let evolutionChain = await getEvolutionChain(pokemon);
+    let htmlString = '';
+    let remaining = 0;
+
+    let card = document.querySelector(".js-evolutions-card")
+    card.innerHTML = `
+    <div class="c-evolutionline__title">
+        <h3 class="c-card__title">
+            Evolution Line
+        </h3>
+    </div>
+    <div class="c-evolutionline js-evolutions">
+    </div>
+    `
+    evolutions = document.querySelector(".js-evolutions");
+
+    if (evolutionChain.length > 1){
+        for (let i = 0; i < evolutionChain.length; i++){
+            remaining = evolutionChain.length - 1 - i;
+            pokemon = evolutionChain[i];
+            fulldataPokemon = await getPokemonFromUrl(pokemon.url);
+    
+            htmlString += `                                
+                <div class="c-evolutionline--pokemon">
+                    <div class="c-pokemon__container-image">
+                        <img class="c-pokemon__image" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${fulldataPokemon.id}.png" alt="official artwork of ${pokemon.name}">
+                    </div>
+                    <p class="c-pokemon__level u-mb-clear">
+                        ${checkLevel(pokemon)}
+                    </p>
+                    <div class="c-pokemon__namegroup">
+                        <p class="c-pokemon__namegroup--name u-mb-clear">
+                            ${capitalizeFirstLetterString(pokemon.name)}
+                        </p>
+                        <p class="c-pokemon__namegroup--index u-mb-clear">
+                            ${padIndex(fulldataPokemon.id)}
+                        </p>
+                    </div>
+                    ${insertTypes(fulldataPokemon)}
+                </div>`
+            
+            // if (remaining > 0){
+            //     if (pokemon.multiple == true){
+            //         htmlString += `
+            //         <svg class="c-icon__next">
+            //             <use xlink:href="#c-plus"/>
+            //         </svg>
+            //         `
+            //     }
+            //     else {
+            //         htmlString += `
+            //         <svg class="c-icon__next">
+            //             <use xlink:href="#c-next"/>
+            //         </svg>
+            //         `
+            //     }
+            // }
+        }
+
+        evolutions.innerHTML = htmlString;
+    }
+    else {
+        card.innerHTML = `
+        <p>
+        This Pokémon doesn't evolve!
+        </p>
+        `
+    }
+
+}
+
+function checkLevel(pokemonEvolution) {
+    if (pokemonEvolution.min_level != null){
+        return `Level ${pokemonEvolution.min_level}`;
+    }
+    else if ((pokemonEvolution.trigger == "use-item" && pokemonEvolution.item != null) || (pokemonEvolution.trigger.name == "use-item" && pokemonEvolution.item != null)){
+        return capitalizeFirstLetterString(`${pokemonEvolution.item}`)
+    }
+    else if (pokemonEvolution.trigger == "level-up" || pokemonEvolution.trigger.name == "level-up"){
+        // there is no minimum level, but there is a certain requirement that will cause the pokémon to evolve at any level when satisfied
+        return "Conditional";
+    }
+    else if (pokemonEvolution.trigger.length != undefined) {
+        return capitalizeFirstLetterString(`${pokemonEvolution.trigger}`);
+    }
+    else {
+        return capitalizeFirstLetterString(`${pokemonEvolution.trigger.name}`);
+    }
+}
+
+function insertTypes(pokemon) {
+    let htmlString = '<ul class="c-pokemon__types c-list-types o-list u-mb-clear">';
+    
+    for(type of pokemon.types){
+        htmlString += `
+        <li class="c-list-types__item--header">
+            <button class="o-button-reset c-list-types__button c-list-types__button--header" style="background-color: ${colorsType(type.type.name)[0]}">
+                <svg class="c-icon__type">
+                    <use xlink:href="#c-${type.type.name}"/>
+                </svg>
+                    ${capitalizeFirstLetterString(type.type.name)}
+            </button>
+        </li>
+        `
+    }
+
+    htmlString += `</ul>`;
+
+    return htmlString;
 }
 
 const showMoves = async (pokemon) => {
@@ -147,8 +269,6 @@ const showMoves = async (pokemon) => {
         keys.forEach((key, i) => dictMoves[key] = values[i]);
 
         sortedDictMoves = sortDict(dictMoves);
-        console.log(sortedDictMoves) 
-        console.log(Object.values(sortedDictMoves))
 
         for (m of Object.values(sortedDictMoves)){
             let json = await getMove(Object.values(sortedDictMoves)[counter]);
@@ -188,6 +308,8 @@ const showMoves = async (pokemon) => {
         </tr>  
         `
     }
+
+    expand.addEventListener("click", ExpandClicked);
 
     moves.innerHTML = htmlString;
 }
@@ -358,9 +480,11 @@ const showTypes = async (pokemon) => {
     htmlString = '';
 
     for(let t of arrayEffectiveTotal){
+        const json = await getType(t);
+
         htmlString += `
         <li class="c-list-types__item">
-        <button class="o-button-reset c-list-types__button" style="background-color: ${colorsType(t)[0]}">
+        <button class="o-button-reset c-list-types__button js-list-types__button collapse" style="background-color: ${colorsType(t)[0]}">
             <svg class="c-icon__type">
                 <use xlink:href="#c-${t}"/>
             </svg>
@@ -369,17 +493,102 @@ const showTypes = async (pokemon) => {
                 <use xlink:href="#c-expand"/>
             </svg>
         </button>
-        </li>
         `
+
+        if (pokemon.types.length == 1){
+            let attack = searchAttackValue(json, pokemon.types[0]);
+            let defense = searchDefenseValue(json, pokemon.types[0]);
+
+            htmlString += `
+            <div class="c-list-types__item--info" style="background-color: ${colorsType(t)[1]}">
+            <h4 class="c-info--header">
+                ${capitalizeFirstLetterString(pokemon.types[0].type.name)} to ${capitalizeFirstLetterString(t)}:
+            </h4>
+            <div class="c-info--modifiers">
+                <div class="c-info--modifiers__defense">
+                    <svg class="c-icon__info">
+                        <use xlink:href="#c-shield"/>
+                    </svg>
+                    <p class="c-icon__info--text u-mb-clear">
+                        ${defense}
+                    </p>
+                </div>
+                <div class="c-info--modifiers__defense">
+                    <svg class="c-icon__info">
+                        <use xlink:href="#c-sword"/>
+                    </svg>
+                    <p class="c-icon__info--text u-mb-clear">
+                        ${attack}
+                    </p>
+                </div>
+            </div>
+            </li>
+            `
+        }
+        else {
+            let attack1 = searchAttackValue(json, pokemon.types[0]);
+            let defense1 = searchDefenseValue(json, pokemon.types[0]);
+            let attack2 = searchAttackValue(json, pokemon.types[1]);
+            let defense2 = searchDefenseValue(json, pokemon.types[1]);
+
+            htmlString += `        
+            <div class="c-list-types__item--info" style="background-color: ${colorsType(t)[1]}">
+            <h4 class="c-info--header">
+                ${capitalizeFirstLetterString(pokemon.types[0].type.name)} to ${capitalizeFirstLetterString(t)}:
+            </h4>
+            <div class="c-info--modifiers">
+                <div class="c-info--modifiers__defense">
+                    <svg class="c-icon__info">
+                        <use xlink:href="#c-shield"/>
+                    </svg>
+                    <p class="c-icon__info--text u-mb-clear">
+                        ${defense1}
+                    </p>
+                </div>
+                <div class="c-info--modifiers__defense">
+                    <svg class="c-icon__info">
+                        <use xlink:href="#c-sword"/>
+                    </svg>
+                    <p class="c-icon__info--text u-mb-clear">
+                        ${attack1}
+                    </p>
+                </div>
+            </div>
+            <h4 class="c-info--header">
+            ${capitalizeFirstLetterString(pokemon.types[1].type.name)} to ${capitalizeFirstLetterString(t)}:
+            </h4>
+            <div class="c-info--modifiers">
+                <div class="c-info--modifiers__defense">
+                    <svg class="c-icon__info">
+                        <use xlink:href="#c-shield"/>
+                    </svg>
+                    <p class="c-icon__info--text u-mb-clear">
+                        ${defense2}
+                    </p>
+                </div>
+                <div class="c-info--modifiers__defense">
+                    <svg class="c-icon__info">
+                        <use xlink:href="#c-sword"/>
+                    </svg>
+                    <p class="c-icon__info--text u-mb-clear">
+                        ${attack2}
+                    </p>
+                </div>
+            </div>
+            </div>
+            </li>`
+        }
     }
 
     effectiveness.innerHTML = htmlString;
     htmlString = '';
 
     for(let t of arrayWeakTotal){
+        const json = await getType(t);
+
         htmlString += `
         <li class="c-list-types__item">
-        <button class="o-button-reset c-list-types__button" style="background-color: ${colorsType(t)[0]}">
+        <button class="o-button-reset c-list-types__button js-list-types__button collapse" style="background-color: ${colorsType(t)[0]}">
             <svg class="c-icon__type">
                 <use xlink:href="#c-${t}"/>
             </svg>
@@ -388,11 +597,158 @@ const showTypes = async (pokemon) => {
                 <use xlink:href="#c-expand"/>
             </svg>
         </button>
-        </li>
         `
+
+        if (pokemon.types.length == 1){
+            let attack = searchAttackValue(json, pokemon.types[0]);
+            let defense = searchDefenseValue(json, pokemon.types[0]);
+
+            htmlString += `
+            <div class="c-list-types__item--info" style="background-color: ${colorsType(t)[1]}">
+            <h4 class="c-info--header">
+                ${capitalizeFirstLetterString(pokemon.types[0].type.name)} to ${capitalizeFirstLetterString(t)}:
+            </h4>
+            <div class="c-info--modifiers">
+                <div class="c-info--modifiers__defense">
+                    <svg class="c-icon__info">
+                        <use xlink:href="#c-shield"/>
+                    </svg>
+                    <p class="c-icon__info--text u-mb-clear">
+                        ${defense}
+                    </p>
+                </div>
+                <div class="c-info--modifiers__defense">
+                    <svg class="c-icon__info">
+                        <use xlink:href="#c-sword"/>
+                    </svg>
+                    <p class="c-icon__info--text u-mb-clear">
+                        ${attack}
+                    </p>
+                </div>
+            </div>
+            </li>
+            `
+        }
+        else {
+            let attack1 = searchAttackValue(json, pokemon.types[0]);
+            let defense1 = searchDefenseValue(json, pokemon.types[0]);
+            let attack2 = searchAttackValue(json, pokemon.types[1]);
+            let defense2 = searchDefenseValue(json, pokemon.types[1]);
+
+            htmlString += `        
+            <div class="c-list-types__item--info" style="background-color: ${colorsType(t)[1]}">
+            <h4 class="c-info--header">
+            ${capitalizeFirstLetterString(pokemon.types[0].type.name)} to ${capitalizeFirstLetterString(t)}:
+            </h4>
+            <div class="c-info--modifiers">
+                <div class="c-info--modifiers__defense">
+                    <svg class="c-icon__info">
+                        <use xlink:href="#c-shield"/>
+                    </svg>
+                    <p class="c-icon__info--text u-mb-clear">
+                        ${defense1}
+                    </p>
+                </div>
+                <div class="c-info--modifiers__defense">
+                    <svg class="c-icon__info">
+                        <use xlink:href="#c-sword"/>
+                    </svg>
+                    <p class="c-icon__info--text u-mb-clear">
+                        ${attack1}
+                    </p>
+                </div>
+            </div>
+            <h4 class="c-info--header">
+            ${capitalizeFirstLetterString(pokemon.types[1].type.name)} to ${capitalizeFirstLetterString(t)}:
+            </h4>
+            <div class="c-info--modifiers">
+                <div class="c-info--modifiers__defense">
+                    <svg class="c-icon__info">
+                        <use xlink:href="#c-shield"/>
+                    </svg>
+                    <p class="c-icon__info--text u-mb-clear">
+                        ${defense2}
+                    </p>
+                </div>
+                <div class="c-info--modifiers__defense">
+                    <svg class="c-icon__info">
+                        <use xlink:href="#c-sword"/>
+                    </svg>
+                    <p class="c-icon__info--text u-mb-clear">
+                        ${attack2}
+                    </p>
+                </div>
+            </div>
+            </div>
+            </li>`
+        }
     }
 
     weakness.innerHTML = htmlString;
+
+    typeButtons = document.querySelectorAll(".js-list-types__button");
+    for (i = 0; i < typeButtons.length; i++) {
+        typeButtons[i].addEventListener("click", ExpandClicked);
+    }
+}
+
+function searchAttackValue(json, counterType) {
+    attack = "x1";
+
+    for(let d of json.damage_relations.double_damage_from){
+        if (d.name == counterType.type.name){
+            attack = "x2"; 
+            break;
+        }
+    }
+    for(let d of json.damage_relations.half_damage_from){
+        if (d.name == counterType.type.name){
+            attack = "x1/2"; 
+            break;
+        }
+    }
+    for(let d of json.damage_relations.no_damage_from){
+        if (d.name == counterType.type.name){
+            attack = "x0"; 
+            break;
+        }
+    }
+
+    return attack;
+}
+
+function searchDefenseValue(json, counterType) {
+    defense = "x1";
+
+    for(let d of json.damage_relations.double_damage_to){
+        if (d.name == counterType.type.name){
+            defense = "x2"; 
+            break;
+        }
+    }
+    for(let d of json.damage_relations.half_damage_to){
+        if (d.name == counterType.type.name){
+            defense = "x1/2"; 
+            break;
+        }
+    }
+    for(let d of json.damage_relations.no_damage_to){
+        if (d.name == counterType.type.name){
+            defense = "x0";
+            break;
+        }
+    }
+
+    return defense;
+}
+
+function ExpandClicked() {
+    if (this.classList.contains("collapse")){
+        this.classList.remove("collapse");
+    }
+    else {
+        this.classList.add("collapse");
+    }
 }
 
 const showCategory = async (pokemon) => {
@@ -430,7 +786,77 @@ const getEvolutionChain = async (pokemon) => {
 
     console.log("get Evolutions: %O", response);
 
-    return response;
+    let evolutionChain = [];
+    let evolutionData = response.chain;
+
+    // an evoltion chain in the api is nested in a sort of family tree way, each evolution is nested in the pokemon that comes before it. Sometimes a pokemon's tree can branch into multiple evolutions at the same time (like Eevee #133)
+    while (evolutionData != undefined && evolutionData.hasOwnProperty("evolves_to")){
+        let evolutionCount = evolutionData.evolves_to.length;
+
+        if (evolutionData.evolution_details.length > 0){
+            if (evolutionData.evolution_details[0].item != null){
+                evolutionChain.push({
+                    "name": evolutionData.species.name,
+                    "min_level": evolutionData.evolution_details[0].min_level,
+                    "trigger": evolutionData.evolution_details[0].trigger.name,
+                    "item": evolutionData.evolution_details[0].item.name,
+                    "multiple": false,
+                    "url": evolutionData.species.url
+                })
+            }
+            else {
+                evolutionChain.push({
+                    "name": evolutionData.species.name,
+                    "min_level": evolutionData.evolution_details[0].min_level,
+                    "trigger": evolutionData.evolution_details[0].trigger.name,
+                    "item": evolutionData.evolution_details[0].item,
+                    "multiple": false,
+                    "url": evolutionData.species.url
+                })
+            }
+        }
+        else {
+            evolutionChain.push({
+                "name": evolutionData.species.name,
+                "min_level": 1,
+                "trigger": null,
+                "item": null,
+                "multiple": false,
+                "url": evolutionData.species.url
+            })
+        }
+
+        if (evolutionCount > 1){
+            for (let i = 1; i < evolutionCount; i++){
+                if (evolutionData.evolves_to[i].evolution_details[0].item != null){
+                    evolutionChain.push({
+                        "name": evolutionData.evolves_to[i].species.name,
+                        "min_level": evolutionData.evolves_to[i].evolution_details[0].min_level,
+                        "trigger": evolutionData.evolves_to[i].evolution_details[0].trigger.name,
+                        "item": evolutionData.evolves_to[i].evolution_details[0].item.name,
+                        "multiple": true,
+                        "url": evolutionData.evolves_to[i].species.url
+                    })
+                }
+                else {
+                    evolutionChain.push({
+                        "name": evolutionData.evolves_to[i].species.name,
+                        "min_level": evolutionData.evolves_to[i].evolution_details[0].min_level,
+                        "trigger": evolutionData.evolves_to[i].evolution_details[0].trigger,
+                        "item": evolutionData.evolves_to[i].evolution_details[0].item,
+                        "multiple": true,
+                        "url": evolutionData.evolves_to[i].species.url
+                    })
+                }
+            }
+        }
+
+        evolutionData = evolutionData.evolves_to[0]
+    }
+
+    console.log("Reshaped evolutionChain: %O", evolutionChain);
+
+    return evolutionChain;
 }
 
 const getType = async(type) => {
@@ -458,6 +884,13 @@ const getDetails = async (url) => {
     showDetails(response);
 }
 
+const getPokemonFromUrl = async(url) => {
+    const response = await get(url);
+    const result = await get(`https://pokeapi.co/api/v2/pokemon/${response.id}`);
+
+    return result;
+}
+
 const get = (url) => fetch(url).then((r) => r.json());
 
 const getAPI = async () => {
@@ -468,6 +901,11 @@ const getAPI = async () => {
     console.log(`API loaded`);
 
     randomPokemon(response);
+}
+
+function refreshPage() {
+    // get a new pokemon without making a new api call
+    refreshPokemon(arrayPokemon);
 }
 
 document.addEventListener("DOMContentLoaded", function(){
@@ -484,6 +922,10 @@ document.addEventListener("DOMContentLoaded", function(){
     weakness = document.querySelector(".js-weakness");
     abilities = document.querySelector(".js-abilities");
     moves = document.querySelector(".js-table-moves");
+    expand = document.querySelector(".js-expand-moves");
+    buttonNewPokemon = document.querySelector(".js-newpokemon")
+
+    buttonNewPokemon.addEventListener("click", refreshPage)
 
     barchartTitle = document.querySelector(".js-barchart-title");
     HPValue = document.querySelector(".js-barchart-value-hp");

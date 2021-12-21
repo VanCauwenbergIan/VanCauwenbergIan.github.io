@@ -95,16 +95,25 @@
             <symbol id="c-next" viewBox="0 0 32 32">
                 <path d="M8.307 26.973l2.36 2.36 13.333-13.333-13.333-13.333-2.36 2.36 10.973 10.973z"></path>
             </symbol>
+            <symbol id="c-plus" viewBox="0 0 32 32">
+                <path d="M25.333 17.333h-8v8h-2.667v-8h-8v-2.667h8v-8h2.667v8h8z"></path>
+            </symbol>
+            <symbol id="c-pokeball" viewBox="0 0 32 32">
+                <path d="M0.016 17.175h10.878c0.468 2.479 2.617 4.329 5.198 4.329 0.008 0 0.016-0 0.024-0h-0.001c0.007 0 0.016 0 0.024 0 2.581 0 4.73-1.85 5.193-4.296l0.005-0.033h10.647c-0.599 8.31-7.488 14.824-15.898 14.824-0.030 0-0.060-0-0.091-0l0.005 0c-0.025 0-0.055 0-0.085 0-8.41 0-15.299-6.514-15.896-14.773l-0.003-0.052zM12.701 16.218c0-0 0-0.001 0-0.001 0-1.95 1.58-3.53 3.53-3.53 0 0 0.001 0 0.001 0h-0c0 0 0.001 0 0.001 0 1.95 0 3.531 1.581 3.531 3.531v0c0 1.951-1.581 3.532-3.532 3.532v0c-0 0-0.001 0-0.001 0-1.95 0-3.531-1.581-3.531-3.531 0-0 0-0.001 0-0.001v0zM21.337 15.027c-0.469-2.479-2.617-4.328-5.198-4.328-0.009 0-0.017 0-0.026 0h0.001c-0.007-0-0.015-0-0.023-0-2.581 0-4.729 1.849-5.192 4.295l-0.005 0.033h-10.894c0.496-8.402 7.431-15.027 15.913-15.027 0.031 0 0.061 0 0.092 0l-0.005-0c0.026-0 0.056-0 0.087-0 8.482 0 15.417 6.626 15.911 14.984l0.002 0.044z"></path>
+            </symbol>
         </defs>
     </svg>
         
     <div class="c-app">
         <div class="o-container">
-            <div class="c-app__logo u-background-mobile">
+            <button class="o-button-reset c-app__logo js-newpokemon u-background-mobile">
+                <svg class="c-icon__logo">
+                    <use xlink:href="#c-pokeball"/>
+                </svg>
                 <h1 class="c-logo u-mb-clear u-color-light">
                     Give me another Pokémon!
                 </h1>
-            </div>
+            </button>
             <div class="c-app__main">
                 <div class="c-pokemondata">
                     <div class="c-pokemondata__item c-pokemondata__header u-background-mobile">
@@ -156,7 +165,7 @@
                                 </h3>
                                 <ul class="c-list-types o-list js-effectiveness">
                                     <li class="c-list-types__item">
-                                        <button class="o-button-reset c-list-types__button" style="background-color: #62B958">
+                                        <button class="o-button-reset c-list-types__button js-list-types__button collapse" style="background-color: #62B958">
                                             <svg class="c-icon__type">
                                                 <use xlink:href="#c-grass"/>
                                             </svg>
@@ -165,6 +174,50 @@
                                                 <use xlink:href="#c-expand"/>
                                             </svg>
                                         </button>
+                                        <div class="c-list-types__item--info" style="background-color: #82C37B">
+                                            <h4 class="c-info--header">
+                                                Grass to Grass:
+                                            </h4>
+                                            <div class="c-info--modifiers">
+                                                <div class="c-info--modifiers__defense">
+                                                    <svg class="c-icon__info">
+                                                        <use xlink:href="#c-shield"/>
+                                                    </svg>
+                                                    <p class="c-icon__info--text u-mb-clear">
+                                                        x1/2
+                                                    </p>
+                                                </div>
+                                                <div class="c-info--modifiers__defense">
+                                                    <svg class="c-icon__info">
+                                                        <use xlink:href="#c-sword"/>
+                                                    </svg>
+                                                    <p class="c-icon__info--text u-mb-clear">
+                                                        x1/2
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <h4 class="c-info--header">
+                                                Poison to Grass:
+                                            </h4>
+                                            <div class="c-info--modifiers">
+                                                <div class="c-info--modifiers__defense">
+                                                    <svg class="c-icon__info">
+                                                        <use xlink:href="#c-shield"/>
+                                                    </svg>
+                                                    <p class="c-icon__info--text u-mb-clear">
+                                                        x1/2
+                                                    </p>
+                                                </div>
+                                                <div class="c-info--modifiers__defense">
+                                                    <svg class="c-icon__info">
+                                                        <use xlink:href="#c-sword"/>
+                                                    </svg>
+                                                    <p class="c-icon__info--text u-mb-clear">
+                                                        x2
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </li>
                                     <li class="c-list-types__item">
                                         <button class="o-button-reset c-list-types__button" style="background-color: #4B91DA">
@@ -266,7 +319,7 @@
                     <div class="c-pokemondata__item c-pokemondata__stats">
                         <div class="c-card">
                             <h3 class="c-card__title js-barchart-title">
-                                Base stats (at Level 1)
+                                Base stats (at min Level)
                             </h3>
                             <div class="c-card__body">
                                 <div class="c-barchart o-list">
@@ -355,7 +408,7 @@
                         </div>
                     </div>
                     <div class="c-pokemondata__item c-pokemondata__movelist">
-                        <div class="c-table__moves--topbar">
+                        <div class="c-table__moves--topbar js-expand-moves">
                             <h3 class="c-card__body--subtitle u-mb-clear">
                                 Moves
                             </h3>
@@ -746,13 +799,13 @@
                             <h3 class="c-card__title u-hide">
                                 Evolution Line
                             </h3>
-                            <div class="c-card__body">
+                            <div class="c-card__body c-card__body--evolutions js-evolutions-card">
+                                <div class="c-evolutionline__title">
+                                    <h3 class="c-card__title">
+                                        Evolution Line
+                                    </h3>
+                                </div>
                                 <div class="c-evolutionline js-evolutions">
-                                    <div class="c-evolutionline__title">
-                                        <h3 class="c-card__title">
-                                            Evolution Line
-                                        </h3>
-                                    </div>
                                     <!-- not all pokemon have evolutions of course, some also just have 1 instead of 2-->
                                     <div class="c-evolutionline--pokemon">
                                         <div class="c-pokemon__container-image">
