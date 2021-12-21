@@ -47,7 +47,7 @@
   --global-whitespace-xl: calc(var(--global-baseline) * 6); /* = 48px */
 
   /* transitions */
-  --global-transitionEasing-out: ease-out;
+  --global-transitionEasing-in: cubic-bezier(.28,0,.7,1)
   --global-transitionDuration-alpha: 0.1s;
   --global-transitionDuration-beta: 0.2s;
   --global-transitionDuration-gamma: 0.3s;
@@ -275,6 +275,74 @@ li ol {
   width: 2rem;
   fill: var(--global-color-neutral-xxxx-light);
   margin-right: 0.5rem;
+
+  transition: transform var(--global-transitionDuration-gamma) var(--global-transitionEasing-in);
+}
+
+.c-app__logo:active .c-logo {
+  color: var(--global-color-neutral-xx-light);
+}
+.c-app__logo:active .c-icon__logo {
+  fill: var(--global-color-neutral-xx-light);
+}
+
+.c-icon__logo.animate {
+  animation-name: rotateIcon;
+  animation-duration: 1s;
+  animation-timing-function: var(--global-transitionEasing-in);
+  animation-iteration-count: 1;
+}
+
+@keyframes rotateIcon {
+  from {
+    transform: rotate(0deg) scale(1.1);
+  }
+  to {
+    transform: rotate(360deg) scale(1.1);
+  }
+}
+
+body.animate {
+  animation-name: swapData;
+  animation-duration: 1s;
+  animation-timing-function: var(--global-transitionEasing-in);
+  animation-iteration-count: 1;
+}
+
+
+@keyframes swapData {
+  from {
+    opacity: 0.1
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+
+/* scale just looks weird on mobile combined with the coloured background */
+@media screen and (min-width: 40rem) {
+  .c-pokemondata.animate {
+    animation-name: swapData;
+    animation-duration: 1s;
+    animation-timing-function: var(--global-transitionEasing-in);
+    animation-iteration-count: 1;
+  }
+
+  body.animate {
+    animation: none;
+  }
+
+  @keyframes swapData {
+    from {
+      transform: scale(0.5);
+      opacity: 0.1
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
 }
 
 /*
@@ -412,6 +480,11 @@ li ol {
 
   display: grid;
   grid-template-columns: 1fr;
+  
+  animation-name: easeInData;
+  animation-duration: var(--global-transitionDuration-beta);
+  animation-timing-function: ease-in;
+  animation-iteration-count: 1;
 }
 
 .collapse + .c-list-types__item--info {
@@ -680,6 +753,11 @@ li ol {
   line-height: calc(21rem / 16);
   color: var(--global-color-neutral-xxx-dark);
   text-align: left;
+
+  animation-name: easeInData;
+  animation-duration: var(--global-transitionDuration-gamma);
+  animation-timing-function: ease-in;
+  animation-iteration-count: 1;
 }
 
 thead {
@@ -741,6 +819,16 @@ td {
 
   fill: var(--global-color-neutral);
 }
+
+@keyframes easeInData {
+  from {
+    opacity: 0.1
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 
 @media screen and (max-width: 47em) {
   .collapse + .c-scroll-table {
@@ -870,6 +958,18 @@ td {
     padding: 0;
     margin: 0 0 var(--global-whitespace-lg) 0;
     width: auto;
+  }
+  .c-app__logo:hover .c-logo {
+    color: var(--global-color-neutral-xxxx-dark);
+  }
+  .c-app__logo:hover .c-icon__logo {
+    fill: var(--global-color-neutral-xxxx-dark);
+  }
+  .c-app__logo:active .c-logo {
+    color: var(--global-color-neutral-dark);
+  }
+  .c-app__logo:active .c-icon__logo {
+    fill: var(--global-color-neutral-dark);
   }
   .c-logo {
     font-size: 1.25rem;

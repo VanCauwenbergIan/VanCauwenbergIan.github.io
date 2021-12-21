@@ -906,6 +906,15 @@ const getAPI = async () => {
 function refreshPage() {
     // get a new pokemon without making a new api call
     refreshPokemon(arrayPokemon);
+
+    iconButton.classList.add("animate");
+    dataBody.classList.add("animate")
+    document.body.classList.add("animate");
+    setTimeout(function () {
+        iconButton.classList.remove("animate");
+        dataBody.classList.remove("animate")
+        document.body.classList.remove("animate");
+    }, 1000);
 }
 
 document.addEventListener("DOMContentLoaded", function(){
@@ -924,6 +933,8 @@ document.addEventListener("DOMContentLoaded", function(){
     moves = document.querySelector(".js-table-moves");
     expand = document.querySelector(".js-expand-moves");
     buttonNewPokemon = document.querySelector(".js-newpokemon")
+    iconButton = document.querySelector(".js-icon__logo")
+    dataBody = document.querySelector(".js-alldata")
 
     buttonNewPokemon.addEventListener("click", refreshPage)
 
